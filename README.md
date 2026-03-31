@@ -191,13 +191,13 @@ Across all depths (5M → 200M), recovery of known truth variants remains essent
 PASS calls increase, but not accuracy
 The number of PASS calls increases with depth (6 → 47), but none overlap the truth set at any depth.
 
-# Takeaway
+## Takeaway
 
 Increasing nominal sequencing depth increases call volume, but does not improve recovery of low-frequency truth variants.
 
 Truth variants are detectable at the candidate level but fail to accumulate enough evidence to pass filtering. At the same time, additional depth introduces more high-confidence calls that do not correspond to known variants.
 
-# Implication
+## Implication
 
 This behavior is consistent with a limitation in usable signal rather than raw read count. In practice, this often reflects:
 
