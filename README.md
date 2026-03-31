@@ -89,10 +89,6 @@ Key results files of manageable size (summaries, fragment size graphs etc) exist
 
 All results in this repository can be reproduced from raw data.
 
-Data sources:
-- SRA: SRR13385577, SRR13385590, ...
-- Reference: ...
-
 To reproduce:
 bash scripts/run_all.sh
 
