@@ -1,0 +1,110 @@
+########################################
+# IGNORE OLD COMPLETELY
+########################################
+/old/
+
+########################################
+# KEEP EMPTY DIRECTORY PLACEHOLDERS
+########################################
+!.gitkeep
+
+########################################
+# RAW DATA
+########################################
+/data/*
+!/data/.gitkeep
+*.fastq
+*.fastq.gz
+*.fq
+*.fq.gz
+*.sra
+
+########################################
+# REFERENCES
+########################################
+/ref/*
+!/ref/.gitkeep
+ref/*.fasta
+ref/*.fa
+ref/*.fai
+ref/*.dict
+ref/*.amb
+ref/*.ann
+ref/*.bwt
+ref/*.pac
+ref/*.sa
+ref/*.vcf
+ref/*.vcf.gz
+ref/*.vcf.gz.tbi
+
+########################################
+# RESULTS: ignore broadly, re-include only useful outputs
+########################################
+/results/*
+!/results/.gitkeep
+!/results/qc/
+!/results/vcf/
+
+!/results/qc/.gitkeep
+!/results/vcf/.gitkeep
+
+# QC outputs to keep
+!/results/qc/**/*.txt
+!/results/qc/**/*.pdf
+!/results/qc/**/*.html
+
+# VCF summary outputs to keep
+!/results/vcf/*.tsv
+!/results/vcf/*.txt
+!/results/vcf/*summary*.tsv
+!/results/vcf/*.bed
+
+# Ignore bulky / derived files under QC
+results/qc/**/*.zip
+results/qc/multiqc/multiqc_data/
+results/qc/**/*.log
+results/qc/**/*.parquet
+results/qc/**/*.json
+
+# Ignore variant files and indexes
+results/vcf/**/*.vcf
+results/vcf/**/*.vcf.gz
+results/vcf/**/*.vcf.gz.tbi
+results/vcf/**/*.csi
+
+results/vcf/truth_intersect*/
+
+# Ignore mosdepth/intermediate files
+*.per-base.bed.gz
+*.regions.bed.gz
+*.thresholds.bed.gz
+*.mosdepth.*
+*.per-base.bed.gz.csi
+*.regions.bed.gz.csi
+*.thresholds.bed.gz.csi
+
+########################################
+# ALIGNMENT / OTHER LARGE FILES
+########################################
+*.bam
+*.bam.bai
+*.cram
+*.cram.crai
+
+########################################
+# TEMP / INTERMEDIATE FILES
+########################################
+*.tmp
+*.temp
+*.log
+*.metrics
+
+########################################
+# PYTHON / NOTEBOOK / EDITOR
+########################################
+.ipynb_checkpoints/
+__pycache__/
+*.pyc
+~*
+.DS_Store
+.vscode/
