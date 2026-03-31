@@ -80,6 +80,8 @@ In total the two runs contain ~1.4 billion read pairs. Subsampling was used to e
     ├── ref
     ├── results
     └── scripts
+
+
 Note that scripts exist to enable the user to do all file retrieval and processing themselves since most files are very large.
 
 Key results files of manageable size (summaries, fragment size graphs etc) exist as part of the repo and can be visualized without running anything. 
