@@ -76,7 +76,6 @@ In total the two runs contain ~1.4 billion read pairs. Subsampling was used to e
 ```
 └── ctdna
     ├── data
-    ├── old
     ├── ref
     ├── results
     └── scripts
