@@ -7,14 +7,15 @@ This repository reproduces and stress-tests somatic variant calling on ultra-dee
 https://pmc.ncbi.nlm.nih.gov/articles/PMC9008010
 
 ---
+---
 
 ## Executive Summary
 
 I evaluated Mutect2 performance on capture-based ultra-deep targeted sequencing data (Gong et al.) across increasing read depths (5M–200M) to assess sensitivity for low-frequency (ctDNA-like) variant detection.
 
-Despite substantial increases in sequencing depth, recovery of known low-AF variants remained limited.  Tumor-only calling retained partial signal but produced noise, while use of a pseudo-matched normal nearly eliminated true positives.
+Despite substantial increases in sequencing depth, recovery of known low-AF variants remained limited. Tumor-only calling retained partial signal but produced substantial noise, while use of a pseudo-matched normal nearly eliminated true positives.
 
-Overall, the analysis shows that standard panel-based somatic pipelines are insufficient for ctDNA applications, likely due to extremely high duplication requiring the presence of UMI-aware processing.
+Overall, increasing nominal depth increased call volume but did not improve recovery of known variants. These results highlight limitations of standard panel-based somatic pipelines for ctDNA-like data and are consistent with reduced effective signal, potentially driven by high duplication and the absence of UMI-aware error correction.
 
 ---
 
