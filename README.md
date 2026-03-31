@@ -182,24 +182,29 @@ Interpretation:
 - Demonstrates over-filtering when using inappropriate normal samples  
 
 ---
-
 ## Interpretation of Detection Failure
 
-Comparison of ALL vs PASS results shows:
+Two consistent patterns emerge when comparing candidate-level (ALL) and filtered (PASS) calls:
 
-- **No increase in truth recovery even before filtering**
-- PASS filtering removes all remaining signal
+Candidate recovery plateaus
+Across all depths (5M → 200M), recovery of known truth variants remains essentially unchanged (~132–133 variants). Increasing sequencing depth does not improve detection of true variants, even before filtering.
+PASS calls increase, but not accuracy
+The number of PASS calls increases with depth (6 → 47), but none overlap the truth set at any depth.
 
-This indicates:
+# Takeaway
 
-> Missed variants were not filtered out — they were not confidently detected in the first place.
+Increasing nominal sequencing depth increases call volume, but does not improve recovery of low-frequency truth variants.
 
-Combined with:
+Truth variants are detectable at the candidate level but fail to accumulate enough evidence to pass filtering. At the same time, additional depth introduces more high-confidence calls that do not correspond to known variants.
 
-- Extremely high duplication  
-- Lack of UMI-based error correction  
+# Implication
 
-the limiting factor is **effective molecular depth**, not nominal sequencing depth.
+This behavior is consistent with a limitation in usable signal rather than raw read count. In practice, this often reflects:
+
+high duplication (limited unique molecule sampling)
+lack of UMI-based error correction
+
+These factors reduce the effective evidence available for low-frequency variant detection, even at very high nominal depth.
 
 ---
 
