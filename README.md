@@ -86,6 +86,19 @@ Note that scripts exist to enable the user to do all file retrieval and processi
 Key results files of manageable size (summaries, fragment size graphs etc) exist as part of the repo and can be visualized without running anything. 
 
 ---
+## Reproducibility
+
+All results in this repository can be reproduced from raw data.
+
+Data sources:
+- SRA: SRR13385577, SRR13385590, ...
+- Reference: ...
+
+To reproduce:
+bash scripts/run_all.sh
+
+---
+
 ## Pipeline
 
 This pipeline:
