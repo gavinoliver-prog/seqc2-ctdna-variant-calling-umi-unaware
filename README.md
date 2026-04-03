@@ -7,21 +7,20 @@ This repository reproduces and stress-tests somatic variant calling on ultra-dee
 https://pmc.ncbi.nlm.nih.gov/articles/PMC9008010
 
 ---
----
 
 ## Executive Summary
 
-I evaluated Mutect2 performance on capture-based ultra-deep targeted sequencing data (Gong et al.) across increasing read depths (5M–200M) to assess sensitivity for low-frequency (ctDNA-like) variant detection.
+I evaluated Mutect2 performance on capture-based ultra-deep targeted sequencing data (Gong et al.) across subsampled read depths (5M–200M) to assess sensitivity for low-frequency (ctDNA-like) variant detection.  While UMIs were utilized in the original maunsript, these were unavailable when retriving the sequences from the SRA.  I continued with the assessment despite this fact, to charactertize UMI-naive variant calling.  
 
-Despite substantial increases in sequencing depth, recovery of known low-AF variants remained limited. Tumor-only calling retained partial signal but produced substantial noise, while use of a pseudo-matched normal nearly eliminated true positives.
+Despite substantial increases across the subsampled sequencing depth gradient, recovery of known low-AF variants remained limited. Tumor-only calling retained partial signal but produced substantial noise, while use of a pseudo-matched normal nearly eliminated true positives.
 
-Overall, increasing nominal depth increased call volume but did not improve recovery of known variants. These results highlight limitations of standard panel-based somatic pipelines for ctDNA-like data and are consistent with reduced effective signal, potentially driven by high duplication and the absence of UMI-aware error correction.
+Overall, increasing nominal depth increased call volume but did not improve recovery of known variants. These results highlight limitations of standard panel-based somatic pipelines for ctDNA-like data and are consistent with reduced effective signal, quite possibly driven by high duplication and the absence of UMI-aware error correction.
 
 ---
 
 ## Note on Public Data Reuse
 
-This analysis highlights a practical limitation when working with publicly deposited sequencing data. Although the original assay incorporated UMIs, these were not retained in the FASTQ files available through SRA, and no explicit metadata described how reads had been processed prior to submission.
+This analysis highlights a practical limitation when working with publicly deposited sequencing data. Although the original assay incorporated UMIs, these are not retained in the FASTQ files available through SRA, and no explicit metadata described how reads had been processed prior to submission.
 
 More consistent inclusion of processing metadata (e.g., whether UMIs are present, stripped, or relocated; whether consensus reads have been generated; and preprocessing steps applied prior to deposition) would improve reproducibility and allow users to better assess dataset suitability before incurring the cost of large-scale downloads.
 
@@ -29,7 +28,7 @@ More consistent inclusion of processing metadata (e.g., whether UMIs are present
 
 ## Overview
 
-This project evaluates somatic variant detection performance in ultra-deep targeted sequencing data derived from a liquid biopsy proficiency study.
+This mini-project evaluates somatic variant detection performance in ultra-deep targeted sequencing data derived from a liquid biopsy proficiency study.
 
 I used publicly available data from:
 
@@ -44,7 +43,7 @@ The goal was to:
 4. Benchmark recovery of known truth variants  
 5. Identify limitations of non-UMI-aware workflows  
 
-This serves as a foundation for a follow-up UMI-aware pipeline.
+This hopefully serves as the foundation for a follow-up UMI-aware pipeline.
 
 ---
 
@@ -105,9 +104,7 @@ This pipeline:
 - Runs Mutect2 (tumor-only and pseudo tumor-normal)  
 - Benchmarks results against a known truth set  
 
-This is a **benchmark / stress-test pipeline**, not a production ctDNA workflow.
-
-To reiterate: the workflow is not UMI-aware since UMIs were removed from the sequences prior to SRA deposition. Future work will address this.
+To reiterate:  this is a benchmark / stress-test pipeline anf not a production ctDNA workflow.  Furthermore, the workflow is not UMI-aware since UMIs were removed from the sequences prior to SRA deposition. Future work will aim to address this.
 
 ---
 
@@ -119,8 +116,8 @@ Analysis was performed across increasing sequencing depths (5M → 200M reads).
 
 Two definitions were evaluated:
 
-- **ALL** = all records in filtered VCF  
-- **PASS** = high-confidence calls after Mutect2 filtering  
+- ALL = all records in filtered VCF  
+- PASS = high-confidence calls after Mutect2 filtering  
 
 #### ALL (filtered VCF)
 
@@ -133,8 +130,8 @@ Two definitions were evaluated:
 
 Observation:
 
-- Truth recovery remained essentially **constant (~132–133 variants)** across all depths  
-- Increasing depth did **not improve recovery at the candidate level**
+- Truth recovery remained essentially constant (~132–133 variants) across all depths  
+- Increasing depth did not improve recovery at the candidate level
 
 #### PASS (high-confidence calls)
 
@@ -148,7 +145,7 @@ Observation:
 Observation:
 
 - PASS calls increase with depth  
-- **No truth variants survive PASS filtering at any depth**
+- No truth variants survive PASS filtering at any depth
 
 
 ## Duplicate Burden
@@ -158,7 +155,7 @@ Duplicate marking revealed extremely high redundancy:
 - mix01_200M: **~93% duplicates**  
 - mix124_200M: **~96% duplicates**
 
-Duplicates were marked (not removed), but these values indicate that most reads represent repeated observations of the same original molecules.
+Duplicates were marked rather than removed, but these values indicate that most reads represent repeated observations of the same original molecules.
 
 Although this was observed early in QC, analysis was continued to assess whether increased depth could compensate in a non-UMI-aware workflow. It did not.
 
@@ -178,33 +175,33 @@ Implication:
 
 ---
 
-## Tumor-Normal (Pseudo-Normal)
+## Paired Tumor-Normal Variant Calling (Pseudo-Normal)
 
 Using mix01 as a pseudo-normal:
 
-- Shared true positives: **~0–1**  
+- Shared true positives: ~0–1
 - Majority of known variants missed  
 
 Interpretation:
 
 - Shared signal between samples was removed  
-- Demonstrates over-filtering when using inappropriate normal samples  
+- Demonstrates over-filtering when using the pseudo normal sample  
 
 ---
 ## Interpretation of Detection Failure
 
-Two consistent patterns emerge when comparing candidate-level (ALL) and filtered (PASS) calls:
+Two consistent patterns emerged when comparing candidate-level (ALL) and filtered (PASS) calls:
 
 Candidate recovery plateaus
-Across all depths (5M → 200M), recovery of known truth variants remains essentially unchanged (~132–133 variants). Increasing sequencing depth does not improve detection of true variants, even before filtering.
-PASS calls increase, but not accuracy
-The number of PASS calls increases with depth (6 → 47), but none overlap the truth set at any depth.
+Across all depths (5M → 200M), recovery of known truth variants remained essentially unchanged (~132–133 variants). Increasing sequencing depth did not improve detection of true variants, even before filtering.
+PASS calls increased, accuracy did not.
+The number of PASS calls increased with depth (6 → 47), but none overlapped the truth set at any depth.
 
 ## Takeaway
 
-Increasing nominal sequencing depth increases call volume, but does not improve recovery of low-frequency truth variants.
+Increasing nominal sequencing depth increased call volume, but did not improve recovery of low-frequency truth variants.
 
-Truth variants are detectable at the candidate level but fail to accumulate enough evidence to pass filtering. At the same time, additional depth introduces more high-confidence calls that do not correspond to known variants.
+Truth variants were detectable at the candidate level but failed to accumulate enough evidence to pass filtering. At the same time, additional depth introduced more high-confidence calls that did not correspond to known variants.
 
 ## Implication
 
@@ -213,7 +210,7 @@ This behavior is consistent with a limitation in usable signal rather than raw r
 high duplication (limited unique molecule sampling)
 lack of UMI-based error correction
 
-These factors reduce the effective evidence available for low-frequency variant detection, even at very high nominal depth.
+These factors reduced the effective evidence available for low-frequency variant detection, even at very high nominal depth.
 
 ---
 
@@ -229,11 +226,11 @@ As a result, the absence of UMI information in this dataset meant that increased
 
 ## Key Takeaways
 
-1. **Depth alone does not improve low-AF detection**
-2. **High duplication severely limits effective coverage**
-3. **Tumor-only retains partial signal but is noisy**
-4. **Pseudo-normal calling removes true signal**
-5. **UMI-aware processing is required for ctDNA sensitivity**
+1. Depth alone did not improve low-AF detection
+2. High duplication severely limits effective coverage
+3. Tumor-only calling retained partial signal but is noisy
+4. Paired tumor:pseudo-normal calling removed true signal
+5. UMI-aware processing is likley required for ctDNA sensitivity
 
 ---
 
